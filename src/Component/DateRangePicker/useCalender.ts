@@ -1,31 +1,24 @@
 import { useCallback, useMemo, useState } from "react";
-import { DatePickerProps, DateRange, InitialCalenderPage } from "./types";
+import { DatePickerProps, InitialCalenderPage } from "./types";
 import { useRangeSelector } from "./useRangeSelector";
 
 const setInitialDate = (initialCalender?: InitialCalenderPage) => {
   const dt = new Date();
+  dt.setHours(0, 0, 0, 0);
   if (!initialCalender) return dt;
   dt.setMonth(initialCalender.month);
   dt.setFullYear(initialCalender.year);
   return dt;
 };
 
-export const useCalender = <T extends DatePickerProps>({
+export const useCalender = ({
   initialCalender,
   ...restProps
-}: T) => {
+}: DatePickerProps) => {
   const [currentDate, setCurrentDate] = useState(
     setInitialDate(initialCalender)
   );
-  const { isDateSelected, dateRange, onDateSelect, isDateDisabled } =
-    useRangeSelector(restProps);
-
-  const onDateClick = (date: Date) => {
-    onDateSelect(date);
-    if (date.getMonth() === currentDate.getMonth()) return;
-    date.setHours(0, 0, 0, 0);
-    setCurrentDate(date);
-  };
+  const { getDateState, dateRange, onDateSelect } = useRangeSelector(restProps);
 
   const calender = useMemo(() => {
     const month = currentDate.getMonth();
@@ -35,12 +28,23 @@ export const useCalender = <T extends DatePickerProps>({
     const days = Array.from({ length: 42 }, (_, i) => {
       const day = i + 1 - dayOnFirstOfMonth;
       const date = new Date(year, month, day, 0, 0, 0, 0) as Date;
+      const isCurrentMonth = date.getMonth() === month;
+      const { isDisabled, isSelected } = getDateState(date);
+
+      const onClick = () => {
+        if (isDisabled) return;
+        onDateSelect(date);
+        if (isCurrentMonth) return;
+        date.setHours(0, 0, 0, 0);
+        setCurrentDate(date);
+      };
 
       return {
         date,
-        disabled: isDateDisabled(date),
-        isSelected: isDateSelected(date),
-        isCurrentMonth: date.getMonth() === month,
+        isCurrentMonth,
+        onClick,
+        isDisabled,
+        isSelected,
       };
     });
 
@@ -62,5 +66,5 @@ export const useCalender = <T extends DatePickerProps>({
     [currentDate]
   );
 
-  return { currentDate, calender, cycleCalender, dateRange, onDateClick };
+  return { currentDate, calender, cycleCalender, dateRange };
 };

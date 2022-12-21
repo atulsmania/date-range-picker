@@ -14,33 +14,45 @@ const inputClassNames =
 
 const App = () => {
   const [dateRange, setDateRange] = useState({} as DateRange);
-  const [from, setFrom] = useState<number>();
-  const [to, setTo] = useState<number>();
+  const [from, setFrom] = useState<string>("");
+  const [to, setTo] = useState<string>("");
 
-  const handleMillisInput = (evt: ChangeEvent<HTMLInputElement>) => {
-    if (!isNaN(+evt.target.value)) {
-    }
-    setFrom(dateRange.from.getTime());
-    setTo(dateRange.to.getTime());
+  const handleFromDateInput = (evt: ChangeEvent<HTMLInputElement>) =>
+    setFrom(evt.target.value);
+  const handleToDateInput = (evt: ChangeEvent<HTMLInputElement>) =>
+    setTo(evt.target.value);
+
+  const value = {
+    from: from ? new Date(from) : dateRange.from,
+    to: to ? new Date(to) : dateRange.to,
   };
+
+  console.log({ from, to });
 
   return (
     <div className="h-screen bg-slate-100 flex items-center justify-center font-mono">
-      <div className="flex justify-between items-center gap-12 max-w-6xl scale-125">
+      <div className="flex justify-between items-center gap-12 max-w-6xl">
         <div>
-          <DatePicker onChange={(dateRange) => setDateRange(dateRange)} />
+          <DatePicker
+            min={new Date("2022-01-01")}
+            max={new Date("2022-12-31")}
+            value={value}
+            onChange={(dateRange) => setDateRange(dateRange)}
+          />
         </div>
         <div className="flex flex-col justify-between gap-12">
           <span className="-mb-8 text-xl">Initial Date Input</span>
           <div className={cardClassNames}>
             <input
               type="date"
+              onChange={handleFromDateInput}
               className={inputClassNames}
               value={from}
               placeholder="{ from: dateInMillis }"
             />
             <input
               type="date"
+              onChange={handleToDateInput}
               className={inputClassNames}
               value={to}
               placeholder="{ to: dateInMillis }"

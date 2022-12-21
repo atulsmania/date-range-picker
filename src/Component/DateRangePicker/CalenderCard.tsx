@@ -2,15 +2,7 @@ import classNames from "classnames";
 import { HTMLAttributes } from "react";
 import { twMerge } from "tailwind-merge";
 
-const getAllDaysString = () => {
-  const days = [];
-  for (let i = 0; i < 7; i++) {
-    days.push(
-      new Date(2021, 0, i).toLocaleString("default", { weekday: "short" })
-    );
-  }
-  return days;
-};
+const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 const CalenderCard = ({
   children,
@@ -54,7 +46,7 @@ const CalenderCardWeek = ({
 }: HTMLAttributes<HTMLSpanElement>) => {
   return (
     <>
-      {getAllDaysString().map((day, index) => (
+      {days.map((day, index) => (
         <span
           className={twMerge("p-2 text-slate-500 rounded-sm ", className)}
           key={index}

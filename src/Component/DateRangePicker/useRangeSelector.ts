@@ -2,6 +2,8 @@ import { useCallback, useState } from "react";
 import { DatePickerProps, DateRange } from "./types";
 
 const getInitialDateRange = (date: DateRange) => {
+  date.from?.setHours(0, 0, 0, 0);
+  date.to?.setHours(0, 0, 0, 0);
   const from = date.from;
   const to = date.to;
   if (!from && !to) return {} as DateRange;
@@ -60,6 +62,8 @@ export const useRangeSelector = ({
   );
 
   const isDateDisabled = (date: Date) => {
+    min?.setHours(0, 0, 0, 0);
+    max?.setHours(0, 0, 0, 0);
     if (min && date.getTime() < min.getTime()) return true;
     if (max && date.getTime() > max.getTime()) return true;
     return false;
@@ -73,5 +77,13 @@ export const useRangeSelector = ({
     );
   };
 
-  return { onDateSelect, isDateDisabled, isDateSelected, dateRange };
+  const getDateState = (date: Date) => {
+    date.setHours(0, 0, 0, 0);
+    return {
+      isDisabled: isDateDisabled(date),
+      isSelected: isDateSelected(date),
+    };
+  };
+
+  return { onDateSelect, dateRange, getDateState };
 };

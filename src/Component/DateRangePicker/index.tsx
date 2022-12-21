@@ -4,26 +4,16 @@ import { useCalender } from "@/Component/DateRangePicker/useCalender";
 import ArrowIcon from "@/assets/Arrow.svg";
 import CalenderCard from "@/Component/DateRangePicker/CalenderCard";
 import { memo } from "react";
-
-type DateRange = {
-  from: Date;
-  to: Date;
-};
-
-type DatePickerProps = {
-  onChange?: (dateRange: DateRange) => void;
-  min?: Date;
-  max?: Date;
-  value?: Partial<DateRange>;
-  defaultValue?: Partial<DateRange>;
-};
+import { DatePickerProps } from "./types";
 
 const DatePicker = (props: DatePickerProps) => {
-  const { calender, currentDate, cycleCalender, onDateClick } =
+  const { calender, currentDate, cycleCalender, dateRange } =
     useCalender(props);
 
   const currentMonth = currentDate.toLocaleString("default", { month: "long" });
   const currentYear = currentDate.getFullYear();
+
+  console.log(dateRange, calender);
 
   return (
     <CalenderCard>
@@ -39,14 +29,17 @@ const DatePicker = (props: DatePickerProps) => {
       <CalenderCard.Body>
         <CalenderCard.Week />
         {calender.map(
-          ({ disabled, isCurrentMonth, isSelected, date }, index) => (
+          (
+            { isDisabled, onClick, isCurrentMonth, isSelected, date },
+            index
+          ) => (
             <CalenderCard.Date
               key={index}
-              onClick={() => !disabled && onDateClick(date)}
+              onClick={onClick}
               className={classNames("cursor-pointer", {
-                "cursor-not-allowed": disabled,
-                "hover:bg-slate-100": !disabled && !isSelected,
-                "transition-colors duration-200": isCurrentMonth,
+                "cursor-not-allowed text-slate-300": isDisabled,
+                "hover:bg-slate-100": !isDisabled && !isSelected,
+                "transition-colors": isCurrentMonth,
                 "text-slate-300": !isCurrentMonth && !isSelected,
                 "bg-slate-300": !isCurrentMonth && isSelected,
                 "bg-slate-700 text-slate-50 shadow-lg":
