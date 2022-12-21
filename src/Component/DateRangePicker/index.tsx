@@ -19,7 +19,8 @@ type DatePickerProps = {
 };
 
 const DatePicker = (props: DatePickerProps) => {
-  const { calender, currentDate, cycleCalender, onDateClick } = useCalender();
+  const { calender, currentDate, cycleCalender, onDateClick } =
+    useCalender(props);
 
   const currentMonth = currentDate.toLocaleString("default", { month: "long" });
   const currentYear = currentDate.getFullYear();
@@ -37,21 +38,25 @@ const DatePicker = (props: DatePickerProps) => {
       </CalenderCard.Header>
       <CalenderCard.Body>
         <CalenderCard.Week />
-        {calender.map(({ isCurrentMonth, isSelected, date }, index) => (
-          <CalenderCard.Date
-            key={index}
-            onClick={() => onDateClick(date)}
-            className={classNames("cursor-pointer", {
-              "transition-colors duration-200": isCurrentMonth,
-              "text-slate-300": !isCurrentMonth && !isSelected,
-              "bg-slate-300": !isCurrentMonth && isSelected,
-              "bg-slate-700 text-slate-50 shadow-lg":
-                isCurrentMonth && isSelected,
-            })}
-          >
-            {date.getDate()}
-          </CalenderCard.Date>
-        ))}
+        {calender.map(
+          ({ disabled, isCurrentMonth, isSelected, date }, index) => (
+            <CalenderCard.Date
+              key={index}
+              onClick={() => !disabled && onDateClick(date)}
+              className={classNames("cursor-pointer", {
+                "cursor-not-allowed": disabled,
+                "hover:bg-slate-100": !disabled && !isSelected,
+                "transition-colors duration-200": isCurrentMonth,
+                "text-slate-300": !isCurrentMonth && !isSelected,
+                "bg-slate-300": !isCurrentMonth && isSelected,
+                "bg-slate-700 text-slate-50 shadow-lg":
+                  isCurrentMonth && isSelected,
+              })}
+            >
+              {date.getDate()}
+            </CalenderCard.Date>
+          )
+        )}
       </CalenderCard.Body>
     </CalenderCard>
   );

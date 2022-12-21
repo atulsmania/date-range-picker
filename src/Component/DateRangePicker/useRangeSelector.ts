@@ -1,12 +1,27 @@
 import { useCallback, useState } from "react";
+import { DatePickerProps, DateRange } from "./types";
 
-type DateRange = {
-  from: Date;
-  to: Date;
+const getInitialDateRange = (date: DateRange) => {
+  const from = date.from;
+  const to = date.to;
+  if (!from && !to) return {} as DateRange;
+  if (!from) return { to } as DateRange;
+  if (!to) return { from } as DateRange;
+  if (from.getTime() > to.getTime()) return { from: to, to: from };
+  return { from, to } as DateRange;
 };
 
-export const useRangeSelector = () => {
-  const [dateRange, setDateRange] = useState({} as DateRange);
+type RangeSelectorProps = Omit<DatePickerProps, "initialCalender">;
+
+export const useRangeSelector = ({
+  value,
+  min,
+  max,
+  onChange,
+}: RangeSelectorProps) => {
+  const [dateRange, setDateRange] = useState(
+    getInitialDateRange({ ...value } as DateRange)
+  );
 
   const onDateSelect = useCallback(
     (date: Date) => {
@@ -44,6 +59,17 @@ export const useRangeSelector = () => {
     [dateRange]
   );
 
+  const disableDate = (date: Date) => {
+    if (min && date.getTime() < min.getTime()) return true;
+    if (max && date.getTime() > max.getTime()) return true;
+    return false;
+  };
+
+  // const onDateSelect = useCallback((date: Date) => {
+  //   if (disableDate(date)) return;
+  //   updateDateRange(date);
+  // }, []);
+
   const isDateSelected = (date: Date) => {
     return (
       (date >= dateRange.from && date <= dateRange.to) ||
@@ -52,5 +78,5 @@ export const useRangeSelector = () => {
     );
   };
 
-  return { onDateSelect, isDateSelected, dateRange };
+  return { onDateSelect, isDateSelected, dateRange, disableDate };
 };

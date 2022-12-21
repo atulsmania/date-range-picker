@@ -34,11 +34,13 @@ const App = () => {
           <span className="-mb-8 text-xl">Initial Date Input</span>
           <div className={cardClassNames}>
             <input
+              type="date"
               className={inputClassNames}
               value={from}
               placeholder="{ from: dateInMillis }"
             />
             <input
+              type="date"
               className={inputClassNames}
               value={to}
               placeholder="{ to: dateInMillis }"

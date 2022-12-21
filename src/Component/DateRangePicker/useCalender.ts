@@ -1,10 +1,6 @@
 import { useCallback, useMemo, useState } from "react";
+import { DatePickerProps, DateRange, InitialCalenderPage } from "./types";
 import { useRangeSelector } from "./useRangeSelector";
-
-type InitialCalenderPage = {
-  month: number;
-  year: number;
-};
 
 const setInitialDate = (initialCalender?: InitialCalenderPage) => {
   const dt = new Date();
@@ -14,11 +10,15 @@ const setInitialDate = (initialCalender?: InitialCalenderPage) => {
   return dt;
 };
 
-export const useCalender = (initialCalender?: InitialCalenderPage) => {
+export const useCalender = <T extends DatePickerProps>({
+  initialCalender,
+  ...restProps
+}: T) => {
   const [currentDate, setCurrentDate] = useState(
     setInitialDate(initialCalender)
   );
-  const { isDateSelected, dateRange, onDateSelect } = useRangeSelector();
+  const { isDateSelected, dateRange, onDateSelect, disableDate } =
+    useRangeSelector(restProps);
 
   const onDateClick = (date: Date) => {
     onDateSelect(date);
@@ -38,6 +38,7 @@ export const useCalender = (initialCalender?: InitialCalenderPage) => {
 
       return {
         date,
+        disabled: disableDate(date),
         isSelected: isDateSelected(date),
         isCurrentMonth: date.getMonth() === month,
       };
