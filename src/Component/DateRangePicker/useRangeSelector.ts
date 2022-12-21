@@ -59,16 +59,11 @@ export const useRangeSelector = ({
     [dateRange]
   );
 
-  const disableDate = (date: Date) => {
+  const isDateDisabled = (date: Date) => {
     if (min && date.getTime() < min.getTime()) return true;
     if (max && date.getTime() > max.getTime()) return true;
     return false;
   };
-
-  // const onDateSelect = useCallback((date: Date) => {
-  //   if (disableDate(date)) return;
-  //   updateDateRange(date);
-  // }, []);
 
   const isDateSelected = (date: Date) => {
     return (
@@ -78,5 +73,5 @@ export const useRangeSelector = ({
     );
   };
 
-  return { onDateSelect, isDateSelected, dateRange, disableDate };
+  return { onDateSelect, isDateDisabled, isDateSelected, dateRange };
 };

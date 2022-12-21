@@ -17,7 +17,7 @@ export const useCalender = <T extends DatePickerProps>({
   const [currentDate, setCurrentDate] = useState(
     setInitialDate(initialCalender)
   );
-  const { isDateSelected, dateRange, onDateSelect, disableDate } =
+  const { isDateSelected, dateRange, onDateSelect, isDateDisabled } =
     useRangeSelector(restProps);
 
   const onDateClick = (date: Date) => {
@@ -38,7 +38,7 @@ export const useCalender = <T extends DatePickerProps>({
 
       return {
         date,
-        disabled: disableDate(date),
+        disabled: isDateDisabled(date),
         isSelected: isDateSelected(date),
         isCurrentMonth: date.getMonth() === month,
       };
