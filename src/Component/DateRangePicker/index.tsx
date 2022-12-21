@@ -3,17 +3,22 @@ import Button from "@/Component/Button";
 import { useCalender } from "@/Component/DateRangePicker/useCalender";
 import ArrowIcon from "@/assets/Arrow.svg";
 import CalenderCard from "@/Component/DateRangePicker/CalenderCard";
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import { DatePickerProps } from "./types";
 
 const DatePicker = (props: DatePickerProps) => {
   const { calender, currentDate, cycleCalender, dateRange } =
     useCalender(props);
 
+  useEffect(() => {
+    /**
+     * @todo remove onchange from here and pass it to useCalender
+     */
+    props?.onChange?.(dateRange);
+  }, [dateRange]);
+
   const currentMonth = currentDate.toLocaleString("default", { month: "long" });
   const currentYear = currentDate.getFullYear();
-
-  console.log(dateRange, calender);
 
   return (
     <CalenderCard>
