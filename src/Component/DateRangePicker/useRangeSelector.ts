@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { DatePickerProps, DateRange } from "./types";
 
 const getInitialDateRange = (date: DateRange) => {
@@ -27,36 +27,48 @@ export const useRangeSelector = ({
 
   const onDateSelect = useCallback(
     (date: Date) => {
+      const newRange = getNewRange(date);
+      setDateRange(newRange);
+      if (onChange) onChange(newRange);
+    },
+    [dateRange]
+  );
+
+  const getNewRange = useCallback(
+    (date: Date) => {
       date.setHours(0, 0, 0, 0);
       const dateMs = date.getTime();
       const fromMs = dateRange.from?.getTime();
       const toMs = dateRange.to?.getTime();
 
+      let prev = { ...dateRange };
+
       if (dateMs === fromMs) {
-        setDateRange((prev) => ({ to: prev.to } as DateRange));
-        return;
+        prev = { to: prev.to } as DateRange;
+        return prev;
       }
 
       if (dateMs === toMs) {
-        setDateRange((prev) => ({ from: prev.from } as DateRange));
-        return;
+        prev = { from: prev.from } as DateRange;
+        return prev;
       }
 
       if (fromMs && toMs) {
         if (toMs - dateMs > dateMs - fromMs) {
-          setDateRange((prev) => ({ ...prev, from: date }));
+          prev = { ...prev, from: date };
         } else {
-          setDateRange({ from: dateRange.from, to: date });
+          prev = { from: dateRange.from, to: date };
         }
       } else if (fromMs) {
         if (dateMs < fromMs) {
-          setDateRange({ from: date, to: dateRange.from });
+          prev = { from: date, to: dateRange.from };
         } else {
-          setDateRange({ ...dateRange, to: date });
+          prev = { ...dateRange, to: date };
         }
       } else {
-        setDateRange((prev) => ({ ...prev, from: date }));
+        prev = { ...prev, from: date };
       }
+      return prev;
     },
     [dateRange]
   );
