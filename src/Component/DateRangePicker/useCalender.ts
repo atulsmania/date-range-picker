@@ -26,7 +26,7 @@ export const useCalender = ({
     const dayOnFirstOfMonth = new Date(year, month, 1).getDay();
 
     const days = Array.from({ length: 42 }, (_, i) => {
-      const day = i + 2 - dayOnFirstOfMonth;
+      const day = i + 1 - dayOnFirstOfMonth;
       const date = new Date(year, month, day, 0, 0, 0, 0) as Date;
       const isCurrentMonth = date.getMonth() === month;
       const { isDisabled, isSelected } = getDateState(date);
