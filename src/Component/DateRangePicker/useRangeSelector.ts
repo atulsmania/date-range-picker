@@ -2,10 +2,10 @@ import { useCallback, useMemo, useState } from "react";
 import { DatePickerProps, DateRange } from "./types";
 
 const getInitialDateRange = (date: DateRange) => {
-  date.from?.setHours(0, 0, 0, 0);
-  date.to?.setHours(0, 0, 0, 0);
   const from = date.from;
   const to = date.to;
+  from?.setHours(0, 0, 0, 0);
+  to?.setHours(0, 0, 0, 0);
   if (!from && !to) return {} as DateRange;
   if (!from) return { to } as DateRange;
   if (!to) return { from } as DateRange;
@@ -24,6 +24,10 @@ export const useRangeSelector = ({
   const [dateRange, setDateRange] = useState(
     getInitialDateRange({ ...value } as DateRange)
   );
+
+  useMemo(() => {
+    setDateRange(getInitialDateRange({ ...value } as DateRange));
+  }, [value]);
 
   const onDateSelect = useCallback(
     (date: Date) => {
