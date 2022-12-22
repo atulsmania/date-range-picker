@@ -7,8 +7,14 @@ import { memo, useEffect } from "react";
 import { DatePickerProps } from "./types";
 
 const DatePicker = (props: DatePickerProps) => {
-  const { calender, currentDate, cycleCalender, dateRange } =
-    useCalender(props);
+  const {
+    calender,
+    currentDate,
+    cycleCalender,
+    dateRange,
+    isNextDisabled,
+    isPrevDisabled,
+  } = useCalender(props);
 
   useEffect(() => {
     /**
@@ -23,11 +29,21 @@ const DatePicker = (props: DatePickerProps) => {
   return (
     <CalenderCard>
       <CalenderCard.Header>
-        <Button onClick={() => cycleCalender(-1)}>
+        <Button
+          className={classNames({
+            invisible: isPrevDisabled,
+          })}
+          onClick={() => cycleCalender(-1)}
+        >
           <img className="rotate-180" src={ArrowIcon} alt="arrow-right" />
         </Button>
         <span className="px-4 text-center font-bold">{`${currentMonth} ${currentYear}`}</span>
-        <Button onClick={() => cycleCalender(1)}>
+        <Button
+          className={classNames({
+            invisible: isNextDisabled,
+          })}
+          onClick={() => cycleCalender(1)}
+        >
           <img src={ArrowIcon} alt="arrow-left" />
         </Button>
       </CalenderCard.Header>

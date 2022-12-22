@@ -26,7 +26,7 @@ export const useCalender = ({
     const dayOnFirstOfMonth = new Date(year, month, 1).getDay();
 
     const days = Array.from({ length: 42 }, (_, i) => {
-      const day = i + 1 - dayOnFirstOfMonth;
+      const day = i + 2 - dayOnFirstOfMonth;
       const date = new Date(year, month, day, 0, 0, 0, 0) as Date;
       const isCurrentMonth = date.getMonth() === month;
       const { isDisabled, isSelected } = getDateState(date);
@@ -41,30 +41,52 @@ export const useCalender = ({
 
       return {
         date,
-        isCurrentMonth,
         onClick,
         isDisabled,
         isSelected,
+        isCurrentMonth,
       };
     });
 
     return days;
   }, [currentDate, dateRange]);
 
+  const isPrevDisabled = useMemo(() => {
+    return calender.some((curr, index) => {
+      if (calender[index - 1]?.isDisabled && !curr.isDisabled) return true;
+      return false;
+    });
+  }, [calender]);
+
+  const isNextDisabled = useMemo(() => {
+    return calender.some((curr, index) => {
+      if (calender[index + 1]?.isDisabled && !curr.isDisabled) return true;
+      return false;
+    });
+  }, [calender]);
+
   const cycleCalender = useCallback(
     (offset: number | { month?: number; year?: number }) => {
-      const newDate = new Date(currentDate);
-      newDate.setHours(0, 0, 0, 0);
+      const dt = new Date(currentDate);
       if (typeof offset === "number") {
-        newDate.setMonth(currentDate.getMonth() + offset);
+        if (offset >= 0 && isNextDisabled) return;
+        if (offset < 0 && isPrevDisabled) return;
+        dt.setMonth(currentDate.getMonth() + offset);
       } else {
-        newDate.setMonth(offset.month || currentDate.getMonth());
-        newDate.setFullYear(offset.year || currentDate.getFullYear());
+        dt.setMonth(currentDate.getMonth() + (offset.month || 0));
+        dt.setFullYear(currentDate.getFullYear() + (offset.year || 0));
       }
-      setCurrentDate(newDate);
+      setCurrentDate(dt);
     },
     [currentDate]
   );
 
-  return { currentDate, calender, cycleCalender, dateRange };
+  return {
+    currentDate,
+    calender,
+    cycleCalender,
+    dateRange,
+    isNextDisabled,
+    isPrevDisabled,
+  };
 };

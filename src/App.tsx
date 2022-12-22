@@ -17,8 +17,8 @@ const App = () => {
       <div className="flex justify-between items-center gap-12 max-w-6xl">
         <div>
           <DatePicker
-            min={new Date("2022-01-01")}
-            max={new Date("2022-12-31")}
+            min={new Date("2022-01-05")}
+            max={new Date("2022-12-12")}
             onChange={(dateRange) => setDateRange(dateRange)}
           />
         </div>
