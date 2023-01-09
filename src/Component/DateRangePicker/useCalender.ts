@@ -1,24 +1,20 @@
 import { useCallback, useMemo, useState } from "react";
-import { DatePickerProps, InitialCalenderPage } from "./types";
+import { DatePickerProps } from "./types";
 import { useRangeSelector } from "./useRangeSelector";
 
-const setInitialDate = (initialCalender?: InitialCalenderPage) => {
+const setInitialDate = ({ value, max }: DatePickerProps) => {
   const dt = new Date();
   dt.setHours(0, 0, 0, 0);
-  if (!initialCalender) return dt;
-  dt.setMonth(initialCalender.month);
-  dt.setFullYear(initialCalender.year);
+  if (!value?.from && !value?.to && !max) return dt;
+  if (value?.from) return value.from;
+  if (value?.to) return value.to;
+  if (max) return max;
   return dt;
 };
 
-export const useCalender = ({
-  initialCalender,
-  ...restProps
-}: DatePickerProps) => {
-  const [currentDate, setCurrentDate] = useState(
-    setInitialDate(initialCalender)
-  );
-  const { getDateState, dateRange, onDateSelect } = useRangeSelector(restProps);
+export const useCalender = (props: DatePickerProps) => {
+  const [currentDate, setCurrentDate] = useState(setInitialDate(props));
+  const { getDateState, dateRange, onDateSelect } = useRangeSelector(props);
 
   const calender = useMemo(() => {
     const month = currentDate.getMonth();

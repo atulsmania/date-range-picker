@@ -6,34 +6,30 @@ const getInitialDateRange = (date: DateRange) => {
   const to = date.to;
   from?.setHours(0, 0, 0, 0);
   to?.setHours(0, 0, 0, 0);
-  if (!from && !to) return {} as DateRange;
-  if (!from) return { to } as DateRange;
-  if (!to) return { from } as DateRange;
+  if (!from && !to) return {};
+  if (!from) return { to };
+  if (!to) return { from };
   if (from.getTime() > to.getTime()) return { from: to, to: from };
-  return { from, to } as DateRange;
+  return { from, to };
 };
-
-type RangeSelectorProps = Omit<DatePickerProps, "initialCalender">;
 
 export const useRangeSelector = ({
   value,
   min,
   max,
   onChange,
-}: RangeSelectorProps) => {
-  const [dateRange, setDateRange] = useState(
-    getInitialDateRange({ ...value } as DateRange)
-  );
+}: DatePickerProps) => {
+  const [dateRange, setDateRange] = useState(getInitialDateRange({ ...value }));
 
   useMemo(() => {
-    setDateRange(getInitialDateRange({ ...value } as DateRange));
+    setDateRange(getInitialDateRange({ ...value }));
   }, [value]);
 
   const onDateSelect = useCallback(
     (date: Date) => {
       const newRange = getNewRange(date);
       setDateRange(newRange);
-      if (onChange) onChange(newRange);
+      onChange?.(newRange);
     },
     [dateRange]
   );
@@ -45,15 +41,15 @@ export const useRangeSelector = ({
       const fromMs = dateRange.from?.getTime();
       const toMs = dateRange.to?.getTime();
 
-      let prev = { ...dateRange };
+      let prev: DateRange = { ...dateRange };
 
       if (dateMs === fromMs) {
-        prev = { to: prev.to } as DateRange;
+        prev = { from: prev.to };
         return prev;
       }
 
       if (dateMs === toMs) {
-        prev = { from: prev.from } as DateRange;
+        prev = { from: prev.from };
         return prev;
       }
 
@@ -86,11 +82,10 @@ export const useRangeSelector = ({
   };
 
   const isDateSelected = (date: Date) => {
-    return (
-      (date >= dateRange.from && date <= dateRange.to) ||
-      date.getTime() === dateRange.from?.getTime() ||
-      date.getTime() === dateRange.to?.getTime()
-    );
+    if (!dateRange.from && !dateRange.to) return false;
+    if (!dateRange.from) return date.getTime() === dateRange.to?.getTime();
+    if (!dateRange.to) return date.getTime() === dateRange.from?.getTime();
+    return date >= dateRange.from && date <= dateRange.to;
   };
 
   const getDateState = (date: Date) => {

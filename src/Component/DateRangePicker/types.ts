@@ -1,17 +1,10 @@
-export type DateRange = {
-  from: Date;
-  to: Date;
-};
+export type DateRange = Partial<Record<"from" | "to", Date>>;
 
-export type InitialCalenderPage = {
-  month: number;
-  year: number;
-};
+export type MinMaxRange = Partial<Record<"min" | "max", Date>>;
 
 export type DatePickerProps = {
   onChange?: (dateRange: DateRange) => void;
   min?: Date;
   max?: Date;
   value?: Partial<DateRange>;
-  initialCalender?: InitialCalenderPage;
 };
