@@ -1,8 +1,6 @@
-
 # Date Range Picker
 
 A Date Range Picker component made with Reactjs (hooks) and tailwind.
-
 
 ## Run Locally
 
@@ -13,11 +11,10 @@ Clone the project
 ```
 
 ```bash
-  cd my-project
+  cd date-range-picker
   npm install
   npm run dev
 ```
-
 
 ## Screenshots
 
@@ -51,7 +48,6 @@ function App() {
 
 or just use the `useCalender` hook to implement own UI
 
-
 ```javascript
 import { useCalender } from "@/Component/DateRangePicker/useCalender";
 
@@ -67,10 +63,6 @@ function App() {
   const currentMonth = currentDate.toLocaleString("default", { month: "long" });
   const currentYear = currentDate.getFullYear();
 
-  return (
-    <CustomDateRangePicker>
-      // your code
-    </CustomDateRangePicker>
-  )
+  return <CustomDateRangePicker>// your code</CustomDateRangePicker>;
 }
 ```
