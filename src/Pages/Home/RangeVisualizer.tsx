@@ -7,19 +7,22 @@ type RangeVisualizerProps = HTMLAttributes<HTMLDivElement> & {
 
 const RangeVisualizer = ({ dateRange, ...restProps }: RangeVisualizerProps) => {
   return (
-    <div {...restProps}>
-      <span className="flex justify-between">
-        from:{" "}
-        <span className="font-light text-slate-700">
-          {dateRange.from ? dateRange.from.toDateString() : "UnSelected"}
+    <div>
+      <h2 className="text-xl font-semibold text-slate-500">Date Range</h2>
+      <div {...restProps}>
+        <span className="flex justify-between">
+          from:
+          <span className="font-light text-slate-700">
+            {dateRange.from ? dateRange.from.toDateString() : "UnSelected"}
+          </span>
         </span>
-      </span>
-      <span className="flex justify-between">
-        to:{" "}
-        <span className="font-light text-slate-700">
-          {dateRange.to ? dateRange.to.toDateString() : "UnSelected"}{" "}
+        <span className="flex justify-between">
+          to:
+          <span className="font-light text-slate-700">
+            {dateRange.to ? dateRange.to.toDateString() : "UnSelected"}
+          </span>
         </span>
-      </span>
+      </div>
     </div>
   );
 };

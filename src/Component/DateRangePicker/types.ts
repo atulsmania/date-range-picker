@@ -6,5 +6,5 @@ export type DatePickerProps = {
   onChange?: (dateRange: DateRange) => void;
   min?: Date;
   max?: Date;
-  value?: Partial<DateRange>;
+  value?: DateRange;
 };

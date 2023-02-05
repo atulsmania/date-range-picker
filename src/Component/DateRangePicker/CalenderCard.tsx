@@ -13,7 +13,7 @@ const CalenderCard = ({
     <div
       className={twMerge(
         classNames(
-          "font-mono w-full max-w-sm text-lg tracking-wide select-none",
+          "font-mono min-w-fit text-lg tracking-wide select-none",
           "bg-white rounded-2xl shadow-lg p-6 space-y-2 cursor-default"
         ),
         className

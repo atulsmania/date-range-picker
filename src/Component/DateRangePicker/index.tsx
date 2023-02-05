@@ -1,10 +1,10 @@
+import { memo } from "react";
 import classNames from "classnames";
 import Button from "@/Component/Button";
 import { useCalender } from "@/Component/DateRangePicker/useCalender";
 import ArrowIcon from "@/assets/Arrow.svg";
 import CalenderCard from "@/Component/DateRangePicker/CalenderCard";
-import { memo } from "react";
-import { DatePickerProps } from "./types";
+import { DatePickerProps } from "@/Component/DateRangePicker/types";
 
 const DatePicker = (props: DatePickerProps) => {
   const {
