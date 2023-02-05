@@ -63,6 +63,8 @@ function App() {
   const currentMonth = currentDate.toLocaleString("default", { month: "long" });
   const currentYear = currentDate.getFullYear();
 
-  return <CustomDateRangePicker>// your code</CustomDateRangePicker>;
+  return <CustomDateRangePicker>
+    // your code
+    </CustomDateRangePicker>;
 }
 ```
