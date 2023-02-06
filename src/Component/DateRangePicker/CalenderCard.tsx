@@ -4,7 +4,7 @@ import { twMerge } from "tailwind-merge";
 
 const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-const CalenderCard = ({
+const CalendarCard = ({
   children,
   className,
   ...restProps
@@ -25,7 +25,7 @@ const CalenderCard = ({
   );
 };
 
-const CalenderCardHeader = ({
+const CalendarCardHeader = ({
   children,
   className,
   ...restProps
@@ -40,7 +40,7 @@ const CalenderCardHeader = ({
   );
 };
 
-const CalenderCardWeek = ({
+const CalendarCardWeek = ({
   className,
   ...restProps
 }: HTMLAttributes<HTMLSpanElement>) => {
@@ -59,7 +59,7 @@ const CalenderCardWeek = ({
   );
 };
 
-const CalenderWeekDaysLayout = ({
+const CalendarWeekDaysLayout = ({
   children,
   className,
   ...restProps
@@ -77,7 +77,7 @@ const CalenderWeekDaysLayout = ({
   );
 };
 
-const CalenderCardDate = ({
+const CalendarCardDate = ({
   className,
   children,
   ...restProps
@@ -92,8 +92,8 @@ const CalenderCardDate = ({
   );
 };
 
-CalenderCard.Date = CalenderCardDate;
-CalenderCard.Body = CalenderWeekDaysLayout;
-CalenderCard.Week = CalenderCardWeek;
-CalenderCard.Header = CalenderCardHeader;
-export default CalenderCard;
+CalendarCard.Date = CalendarCardDate;
+CalendarCard.Body = CalendarWeekDaysLayout;
+CalendarCard.Week = CalendarCardWeek;
+CalendarCard.Header = CalendarCardHeader;
+export default CalendarCard;

@@ -12,11 +12,11 @@ const setInitialDate = ({ value, max }: DatePickerProps) => {
   return dt;
 };
 
-export const useCalender = (props: DatePickerProps) => {
+export const useCalendar = (props: DatePickerProps) => {
   const [currentDate, setCurrentDate] = useState(setInitialDate(props));
   const { getDateState, dateRange, onDateSelect } = useRangeSelector(props);
 
-  const calender = useMemo(() => {
+  const calendar = useMemo(() => {
     const month = currentDate.getMonth();
     const year = currentDate.getFullYear();
     const dayOnFirstOfMonth = new Date(year, month, 1).getDay();
@@ -48,20 +48,20 @@ export const useCalender = (props: DatePickerProps) => {
   }, [currentDate, dateRange]);
 
   const isPrevDisabled = useMemo(() => {
-    return calender.some((curr, index) => {
-      if (calender[index - 1]?.isDisabled && !curr.isDisabled) return true;
+    return calendar.some((curr, index) => {
+      if (calendar[index - 1]?.isDisabled && !curr.isDisabled) return true;
       return false;
     });
-  }, [calender]);
+  }, [calendar]);
 
   const isNextDisabled = useMemo(() => {
-    return calender.some((curr, index) => {
-      if (calender[index + 1]?.isDisabled && !curr.isDisabled) return true;
+    return calendar.some((curr, index) => {
+      if (calendar[index + 1]?.isDisabled && !curr.isDisabled) return true;
       return false;
     });
-  }, [calender]);
+  }, [calendar]);
 
-  const cycleCalender = useCallback(
+  const cycleCalendar = useCallback(
     (offset: number | { month?: number; year?: number }) => {
       const dt = new Date(currentDate);
       if (typeof offset === "number") {
@@ -79,8 +79,8 @@ export const useCalender = (props: DatePickerProps) => {
 
   return {
     currentDate,
-    calender,
-    cycleCalender,
+    calendar,
+    cycleCalendar,
     dateRange,
     isNextDisabled,
     isPrevDisabled,

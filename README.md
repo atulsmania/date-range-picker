@@ -46,25 +46,23 @@ function App() {
 }
 ```
 
-or just use the `useCalender` hook to implement own UI
+or just use the `useCalendar` hook to implement own UI
 
 ```javascript
-import { useCalender } from "@/Component/DateRangePicker/useCalender";
+import { useCalendar } from "@/Component/DateRangePicker/useCalendar";
 
 function App() {
   const {
-    calender,
+    calendar,
     currentDate,
-    cycleCalender,
+    cycleCalendar,
     isNextDisabled,
     isPrevDisabled,
-  } = useCalender(props);
+  } = useCalendar(props);
 
   const currentMonth = currentDate.toLocaleString("default", { month: "long" });
   const currentYear = currentDate.getFullYear();
 
-  return <CustomDateRangePicker>
-    // your code
-    </CustomDateRangePicker>;
+  return <CustomDateRangePicker>// your code</CustomDateRangePicker>;
 }
 ```

@@ -1,31 +1,31 @@
 import { memo } from "react";
 import classNames from "classnames";
 import Button from "@/Component/Button";
-import { useCalender } from "@/Component/DateRangePicker/useCalender";
+import { useCalendar } from "@/Component/DateRangePicker/useCalendar";
 import ArrowIcon from "@/assets/Arrow.svg";
-import CalenderCard from "@/Component/DateRangePicker/CalenderCard";
+import CalendarCard from "@/Component/DateRangePicker/CalendarCard";
 import { DatePickerProps } from "@/Component/DateRangePicker/types";
 
 const DatePicker = (props: DatePickerProps) => {
   const {
-    calender,
+    calendar,
     currentDate,
-    cycleCalender,
+    cycleCalendar,
     isNextDisabled,
     isPrevDisabled,
-  } = useCalender(props);
+  } = useCalendar(props);
 
   const currentMonth = currentDate.toLocaleString("default", { month: "long" });
   const currentYear = currentDate.getFullYear();
 
   return (
-    <CalenderCard>
-      <CalenderCard.Header>
+    <CalendarCard>
+      <CalendarCard.Header>
         <Button
           className={classNames({
             invisible: isPrevDisabled,
           })}
-          onClick={() => cycleCalender(-1)}
+          onClick={() => cycleCalendar(-1)}
         >
           <img className="rotate-180" src={ArrowIcon} alt="arrow-right" />
         </Button>
@@ -34,19 +34,19 @@ const DatePicker = (props: DatePickerProps) => {
           className={classNames({
             invisible: isNextDisabled,
           })}
-          onClick={() => cycleCalender(1)}
+          onClick={() => cycleCalendar(1)}
         >
           <img src={ArrowIcon} alt="arrow-left" />
         </Button>
-      </CalenderCard.Header>
-      <CalenderCard.Body>
-        <CalenderCard.Week />
-        {calender.map(
+      </CalendarCard.Header>
+      <CalendarCard.Body>
+        <CalendarCard.Week />
+        {calendar.map(
           (
             { isDisabled, onClick, isCurrentMonth, isSelected, date },
             index
           ) => (
-            <CalenderCard.Date
+            <CalendarCard.Date
               key={index}
               onClick={onClick}
               className={classNames("cursor-pointer", {
@@ -60,11 +60,11 @@ const DatePicker = (props: DatePickerProps) => {
               })}
             >
               {date.getDate()}
-            </CalenderCard.Date>
+            </CalendarCard.Date>
           )
         )}
-      </CalenderCard.Body>
-    </CalenderCard>
+      </CalendarCard.Body>
+    </CalendarCard>
   );
 };
 
